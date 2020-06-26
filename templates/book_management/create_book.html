@@ -1,0 +1,12 @@
+{% extends 'book_management/base.html' %}
+{% load static %}
+{% block content %}
+    <div style="margin-top: 50px" class="content-wrapper">
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+{% endblock %}

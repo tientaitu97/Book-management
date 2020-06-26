@@ -1,0 +1,106 @@
+{% extends 'book_management/base.html' %}
+{% load static %}
+{% block content %}
+     <div style="margin-left: 200px">
+        <form style="margin-top: 100px; margin-left: 300px" class="form-inline " method="post" action="/search/">
+            {% csrf_token %}
+
+            <input class="form-control form-control-sm mr-3 w-75" type="text" name="srh" placeholder="Search"
+                   aria-label="Search">
+            <button type="submit" style="margin-left: 0px">Search</button>
+
+
+        </form>
+        <br><br>
+    </div>
+
+    <div>
+        {% if messages %}
+            <ul class="messages">
+                {% for k in messages %}
+                    <li style="color: red">{{ k }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    <br>
+    <div class="list-book">
+        <h1> List Book</h1>
+    </div>
+
+    <div class="content-wrapper">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                {#                <th scope="col">STT</th>#}
+                <th scope="col">ID</th>
+                <th scope="col">Tên</th>
+                <th scope="col">Tác giả</th>
+                <th scope="col">Thể loại</th>
+                <th scope="col">Nhà xuất bản</th>
+                <th scope="col">Năm xuất bản</th>
+                <th scope="col">Update</th>
+                <th scope="col">Remove</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% if sr %}
+                {% for book in sr %}
+                    <tr>
+                        {#                        <th scope="row">{{ forloop.counter }}</th>#}
+                        <td>{{ book.id }}</td>
+                        <td>{{ book.name_book }}</td>
+                        <td>{{ book.author }}</td>
+                        <td>{{ book.category }}</td>
+                        <td>{{ book.publishingCompany_id }}</td>
+                        <td>{{ book.publishingYear }}</td>
+                        <td><a class="btn btn-sm btn-info" href="{% url 'news:update_book' book.id %}">Update</a></td>
+                        <td><a class="btn btn-sm btn-danger" href="{% url 'news:delete_book' book.id %}">Delete</a></td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                {% for book in books %}
+                    <tr>
+                        {#                        <th scope="row">{{ forloop.counter }}</th>#}
+                        <td>{{ book.id }}</td>
+                        <td>{{ book.name_book }}</td>
+                        <td>{{ book.author }}</td>
+                        <td>{{ book.category }}</td>
+                        <td>{{ book.publishingCompany_id }}</td>
+                        <td>{{ book.publishingYear }}</td>
+                        <td><a class="btn btn-sm btn-info" href="{% url 'news:update_book' book.id %}">Update</a></td>
+                        <td><a class="btn btn-sm btn-danger" href="{% url 'news:delete_book' book.id %}">Delete</a></td>
+                    </tr>
+                {% endfor %}
+
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <ul style="margin-left: 250px" class="pagination">
+            {% if books.has_previous %}
+                <li><a class="page-link" href="?page={{ books.previous_page_number }}">&laquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for b in page_range %}
+                {% if books.number == b %}
+                    <li class="page-item active">
+                        <a href="?page={{ b }}" class="page-link">{{ b }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a href="?page={{ b }}" class="page-link">{{ b }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            {% if books.has_next %}
+                <li><a  class="page-link" href="?page={{ books.next_page_number }}">&raquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+        </ul>
+    </div>
+{% endblock %}

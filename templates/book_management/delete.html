@@ -1,0 +1,12 @@
+{% extends 'book_management/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="content-wrapper">
+        <p>Are you sure you want to delete "{{ item }}"</p>
+    <form action="{% url 'news:delete_book' item.id %}" method="post">
+        {% csrf_token %}
+        <a href="{% url 'news:search' %}">Cancel</a>
+        <input type="submit" value="Delete" class="btn btn-sm btn-danger">
+    </form>
+    </div>
+{% endblock %}
