@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '-o=bc2o@2!$q2)%sqz+#^-wpj6h49oz9wtyy#a36q^!#8_5scp'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['management-books.herokuapp.com', '127.0.0.1']
 
@@ -125,3 +125,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+MEDIA_URL = '/search/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/manage_student/dist/img')

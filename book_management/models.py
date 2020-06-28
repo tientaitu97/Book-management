@@ -48,6 +48,7 @@ class Book(models.Model):
     category = models.ForeignKey(Category, blank=False, null=False, on_delete=models.CASCADE)
     publishingCompany_id = models.ForeignKey(PublishingCompany, blank=False, null=False, on_delete=models.CASCADE)
     publishingYear = models.DateTimeField(blank=True, null=True)
+    photo = models.ImageField(blank=True, null=True)
 
     def __str__(self):
         return self.name_book

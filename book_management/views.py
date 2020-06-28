@@ -63,7 +63,7 @@ def proper_pagination(books, index):
 
 
 def search(request):
-    match = Book.objects.all()
+    match = Book.objects.all().order_by('-id')
     if request.method == 'POST':
         srch = request.POST['srh']
         if srch:
@@ -77,7 +77,7 @@ def search(request):
                 messages.error(request, 'no result found')
         else:
             return HttpResponseRedirect('/search/')
-    paginator = Paginator(match, 20)
+    paginator = Paginator(match, 30)
     page = request.GET.get('page')
     try:
         books = paginator.page(page)
@@ -93,14 +93,15 @@ def search(request):
         (start_index, end_index) = proper_pagination(books, index=4)
 
     page_range = list(paginator.page_range)[start_index:end_index]
-    context = {'page_range': page_range, 'books': books}
+    list_book = list(match)
+    context = {'page_range': page_range, 'books': books, 'list_book': list_book}
     return render(request, 'book_management/search.html', context)
 
 
 def createBook(request):
     form = BookForm()
     if request.method == 'POST':
-        form = BookForm(request.POST)
+        form = BookForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('/search')
@@ -112,12 +113,14 @@ def updateBook(request, pk):
     book = Book.objects.get(id=pk)
     form = BookForm(instance=book)
     if request.method == 'POST':
-        form = BookForm(request.POST, instance=book)
+        form = BookForm(request.POST, request.FILES, instance=book)
         if form.is_valid():
             form.save()
             return redirect('/search')
     context = {'form': form}
     return render(request, 'book_management/create_book.html', context)
+
+
 def deleteBook(request, pk):
     book = Book.objects.get(id=pk)
     if request.method == "POST":
