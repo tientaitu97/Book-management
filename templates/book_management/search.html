@@ -1,7 +1,7 @@
 {% extends 'book_management/base.html' %}
 {% load static %}
 {% block content %}
-     <div style="margin-left: 200px">
+    <div style="margin-left: 200px">
         <form style="margin-top: 100px; margin-left: 300px" class="form-inline " method="post" action="/search/">
             {% csrf_token %}
 
@@ -29,7 +29,7 @@
     </div>
 
     <div class="content-wrapper">
-        <table class="table table-bordered">
+        <table id="myTable" class="table table-bordered">
             <thead>
             <tr>
                 {#                <th scope="col">STT</th>#}
@@ -39,6 +39,7 @@
                 <th scope="col">Thể loại</th>
                 <th scope="col">Nhà xuất bản</th>
                 <th scope="col">Năm xuất bản</th>
+                <th scope="col">Images</th>
                 <th scope="col">Update</th>
                 <th scope="col">Remove</th>
 
@@ -55,6 +56,7 @@
                         <td>{{ book.category }}</td>
                         <td>{{ book.publishingCompany_id }}</td>
                         <td>{{ book.publishingYear }}</td>
+                        <td><a href="{{ book.photo }}">{{ book.photo }}</a></td>
                         <td><a class="btn btn-sm btn-info" href="{% url 'news:update_book' book.id %}">Update</a></td>
                         <td><a class="btn btn-sm btn-danger" href="{% url 'news:delete_book' book.id %}">Delete</a></td>
                     </tr>
@@ -69,6 +71,7 @@
                         <td>{{ book.category }}</td>
                         <td>{{ book.publishingCompany_id }}</td>
                         <td>{{ book.publishingYear }}</td>
+                        <td><a href="{{ book.photo }}">{{ book.photo }}</a></td>
                         <td><a class="btn btn-sm btn-info" href="{% url 'news:update_book' book.id %}">Update</a></td>
                         <td><a class="btn btn-sm btn-danger" href="{% url 'news:delete_book' book.id %}">Delete</a></td>
                     </tr>
@@ -97,10 +100,30 @@
                 {% endif %}
             {% endfor %}
             {% if books.has_next %}
-                <li><a  class="page-link" href="?page={{ books.next_page_number }}">&raquo;</a></li>
+                <li><a class="page-link" href="?page={{ books.next_page_number }}">&raquo;</a></li>
             {% else %}
                 <li class="disabled"><span>&raquo;</span></li>
             {% endif %}
         </ul>
     </div>
+{% endblock %}
+{% block script %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8"
+            src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable(
+                 {   paging: false,
+                     scrollY: 600,
+                     searching: false
+
+
+                 }
+            );
+
+        });
+
+    </script>
 {% endblock %}
