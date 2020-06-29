@@ -3,3 +3,4 @@ django-filter
 Django==3.0.7
 django-heroku
 gunicorn
+Pillow
